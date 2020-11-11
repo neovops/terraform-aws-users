@@ -1,5 +1,7 @@
 /**
- * # aws-users module
+ * # Terraform AWS users module
+ *
+ * [Neovops](https://neovops.io)
  *
  * Terraform module to provision aws iam users suitable for humans.
  *
@@ -8,7 +10,7 @@
  */
 
 locals {
-  all_users = toset(concat(var.root_users))
+  all_users = toset(concat(var.super_admin_users))
 }
 
 resource "aws_iam_user" "user" {
@@ -74,4 +76,33 @@ resource "aws_iam_group_policy" "all_users_self_management" {
   name   = "SelfManagement"
   group  = aws_iam_group.all_users.id
   policy = data.aws_iam_policy_document.iam_self_management.json
+}
+
+## Super admin
+
+resource "aws_iam_group" "super_admin" {
+  name = var.super_admin_group_name
+}
+
+resource "aws_iam_group_membership" "root" {
+  name = "${var.super_admin_group_name}-membership"
+
+  users = [for name in super_admin_users : aws_iam_user.user[name].name]
+
+  group = aws_iam_group.super_admin.name
+}
+
+data "aws_iam_policy_document" "full_access" {
+  statement {
+    sid       = "AllowFullAccess"
+    effect    = "Allow"
+    actions   = ["*"]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_group_policy" "root_full_access" {
+  name   = "FullAccess"
+  group  = aws_iam_group.super_admin.id
+  policy = data.aws_iam_policy_document.full_access.json
 }
