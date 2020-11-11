@@ -84,10 +84,10 @@ resource "aws_iam_group" "super_admin" {
   name = var.super_admin_group_name
 }
 
-resource "aws_iam_group_membership" "root" {
+resource "aws_iam_group_membership" "super_admin" {
   name = "${var.super_admin_group_name}-membership"
 
-  users = [for name in super_admin_users : aws_iam_user.user[name].name]
+  users = [for name in var.super_admin_users : aws_iam_user.user[name].name]
 
   group = aws_iam_group.super_admin.name
 }
