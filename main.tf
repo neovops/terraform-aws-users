@@ -1,7 +1,7 @@
 /**
- * # Terraform AWS users module
+ * [![Neovops](https://neovops.io/images/logos/neovops.svg)](https://neovops.io)
  *
- * [Neovops](https://neovops.io)
+ * # Terraform AWS users module
  *
  * Terraform module to provision aws iam users suitable for humans.
  *
