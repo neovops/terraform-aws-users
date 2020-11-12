@@ -7,6 +7,21 @@
  *
  * This module create a group for all users with a policy to allow self
  * management common actions (password reset, etc.).
+ *
+ * ## Example
+ *
+ * ```hcl
+ * module "users" {
+ *   source = "neovops/users/aws"
+ *   # You should set specific version
+ *   # version = "x.y.z"
+ *
+ *   super_admin_users = [
+ *     "firstname1.lastname1",
+ *     "firstname2.lastname2",
+ *   ]
+ * }
+ * ```
  */
 
 locals {
