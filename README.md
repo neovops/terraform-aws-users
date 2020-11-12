@@ -33,4 +33,3 @@ management common actions (password reset, etc.).
 | Name | Description |
 |------|-------------|
 | all\_users | All users list managed by this module |
-
