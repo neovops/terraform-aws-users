@@ -10,15 +10,48 @@ management common actions (password reset, etc.).
 ## Example
 
 ```hcl
+data "aws_iam_policy_document" "full_access" {
+  statement {
+    sid       = "AllowFullAccess"
+    effect    = "Allow"
+    actions   = ["*"]
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "ec2_full_access" {
+  statement {
+    sid       = "EC2FullAccess"
+    effect    = "Allow"
+    actions   = ["ec2:*"]
+    resources = ["*"]
+  }
+}
+
 module "users" {
   source = "neovops/users/aws"
   # You should set specific version
   # version = "x.y.z"
 
-  super_admin_users = [
-    "firstname1.lastname1",
-    "firstname2.lastname2",
-  ]
+  group_policies = {
+    EC2FullAccess = data.aws_iam_policy_document.ec2_full_access.json
+    FullAccess    = data.aws_iam_policy_document.full_access.json
+  }
+
+  groups = {
+    admins = {
+      users = [
+        "firstname1.lastname1",
+        "firstname2.lastname2",
+      ]
+      policies = ["FullAccess"]
+    }
+
+    developpers = {
+      users    = ["firstname3.lastname3"]
+      policies = ["EC2FullAccess"]
+    }
+  }
 }
 ```
 
@@ -40,8 +73,8 @@ module "users" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | all\_users\_group\_name | Group name with all users. | `string` | `"users"` | no |
-| super\_admin\_group\_name | Group name for super admins users. | `string` | `"admins"` | no |
-| super\_admin\_users | Super admin users to create, with all privileges. | `list(string)` | `[]` | no |
+| group\_policies | Policies that can be used in groups. Key is policy name, value is policy. | `map(string)` | `{}` | no |
+| groups | Groups to create. Key is group name. Each policy is a string and must exists in group\_policies | <pre>map(<br>    object({<br>      users    = list(string)<br>      policies = list(string)<br>    })<br>  )</pre> | `{}` | no |
 
 ## Outputs
 

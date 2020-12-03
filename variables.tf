@@ -4,14 +4,19 @@ variable "all_users_group_name" {
   description = "Group name with all users."
 }
 
-variable "super_admin_group_name" {
-  type        = string
-  default     = "admins"
-  description = "Group name for super admins users."
+variable "group_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Policies that can be used in groups. Key is policy name, value is policy."
 }
 
-variable "super_admin_users" {
-  type        = list(string)
-  default     = []
-  description = "Super admin users to create, with all privileges."
+variable "groups" {
+  type = map(
+    object({
+      users    = list(string)
+      policies = list(string)
+    })
+  )
+  default     = {}
+  description = "Groups to create. Key is group name. Each policy is a string and must exists in group_policies"
 }
