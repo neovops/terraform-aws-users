@@ -12,11 +12,10 @@ jobs:
 
       - name: Generate Documentation
         id: documentation
-        uses: Dirrk/terraform-docs@v1.0.8
+        uses: terraform-docs/gh-actions@v0.6.0
         with:
-          tf_docs_output_file: README.md
-          tf_docs_output_method: replace
-          tf_docs_git_push: 'false'
+          output-file: README.md
+          output-method: replace
 
       - name: Check up-to-date
         env:
