@@ -48,7 +48,7 @@
  *       policies = ["FullAccess"]
  *     }
  *
- *     developpers = {
+ *     developers = {
  *       users    = ["firstname3.lastname3"]
  *       policies = ["EC2FullAccess"]
  *     }
