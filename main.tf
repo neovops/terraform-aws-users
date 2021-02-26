@@ -8,6 +8,14 @@
  * This module create a group for all users with a policy to allow self
  * management common actions (password reset, etc.).
  *
+ * You can also create custom groups with specifics policies.
+ *
+ *
+ * ## Terraform registry
+ *
+ * This module is available on
+ * [terraform registry](https://registry.terraform.io/modules/neovops/users/aws/latest).
+ *
  * ## Example
  *
  * ```hcl
